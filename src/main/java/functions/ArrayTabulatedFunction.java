@@ -8,12 +8,26 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     private int count;
 
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
+        this.count = xValues.length;
         this.xValues = Arrays.copyOf(xValues, xValues.length);
         this.yValues = Arrays.copyOf(yValues, yValues.length);
-        this.count = xValues.length;
 
     }
-
+    public double apply(double x) {
+        double result;
+        if (x < xValues[0]) {
+            result = extrapolateLeft(x);
+        } else if (x > xValues[count - 1]) {
+            result = extrapolateRight(x);
+        } else {
+            if (indexOfX(x) != -1) {
+                result = getY(indexOfX(x));
+            } else {
+                result = interpolate(x, floorIndexOfX(x));
+            }
+        }
+        return result;
+    }
     public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
         this.count = count;
         double[] myArrayX = new double[count];
@@ -129,20 +143,45 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         else
             return (leftY + (((rightY - leftY) / (rightX - leftX)) * (x - leftX)));
     }
-
-    public double apply(double x) {
-        double result;
-        if (x < xValues[0]) {
-            result = extrapolateLeft(x);
-        } else if (x > xValues[count - 1]) {
-            result = extrapolateRight(x);
-        } else {
-            if (indexOfX(x) != -1) {
-                result = getY(indexOfX(x));
-            } else {
-                result = interpolate(x, floorIndexOfX(x));
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (int i = 0; i < count; i++) {
+            sb.append("(").append(xValues[i]).append(", ").append(yValues[i]).append(")");
+            if (i < count - 1) {
+                sb.append(", ");
             }
         }
-        return result;
+        sb.append("]");
+        return sb.toString();
+    } @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ArrayTabulatedFunction)) return false;
+        ArrayTabulatedFunction that = (ArrayTabulatedFunction) o;
+        if (count != that.count) return false;
+        for (int i = 0; i < count; i++) {
+            if (this.xValues[i] != that.xValues[i] || this.yValues[i] != that.yValues[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(xValues) ^ Arrays.hashCode(yValues);
+    }
+
+    @Override
+    public Object clone() {
+        try {
+            ArrayTabulatedFunction clone = (ArrayTabulatedFunction) super.clone();
+            clone.xValues = Arrays.copyOf(this.xValues, this.count);
+            clone.yValues = Arrays.copyOf(this.yValues, this.count);
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
