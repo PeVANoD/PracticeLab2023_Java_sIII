@@ -1,6 +1,6 @@
 package functions;
+public class IdentityFunction implements MathFunction, Cloneable {
 
-class IdentityFunction implements MathFunction {
     public double apply(double x) {
         return x;
     }
@@ -25,7 +25,6 @@ class IdentityFunction implements MathFunction {
     public int hashCode() {
         return getClass().hashCode();
     }
-
     @Override
     public IdentityFunction clone() throws CloneNotSupportedException {
         return (IdentityFunction) super.clone();

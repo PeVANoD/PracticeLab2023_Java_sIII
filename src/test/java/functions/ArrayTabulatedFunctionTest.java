@@ -1,4 +1,5 @@
 package functions;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -97,7 +98,29 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testFloorIndexOfX() {
-        assertEquals(1, arrayTabulatedFunction.floorIndexOfX(1.7));
-        assertNotEquals(2, arrayTabulatedFunction.floorIndexOfX(1.7));
+        assertEquals(2, arrayTabulatedFunction.floorIndexOfX(1.7));
+        assertNotEquals(1, arrayTabulatedFunction.floorIndexOfX(1.7));
+    }
+    @Test
+    void cloneTest() {
+        Object arrayTabulatedFunctionTest = arrayTabulatedFunction.clone();
+        assertTrue(arrayTabulatedFunction.equals(arrayTabulatedFunctionTest));
+    }
+    @Test
+    void toStringTest() {
+        assertEquals("[(1.0, 2.0), (1.5, 3.0), (2.0, 4.0), (2.5, 5.0), (3.0, 6.0)]", arrayTabulatedFunction.toString());
+        assertNotEquals("(0;0)", arrayTabulatedFunction.toString());
+    }
+
+    @Test
+    void equalsTest() {
+        ArrayTabulatedFunction arrayTabulatedFunctionTest = new ArrayTabulatedFunction(xValue, yValue);
+        assertTrue(arrayTabulatedFunction.equals(arrayTabulatedFunctionTest));
+    }
+    @Test
+    public void testHashCode() {
+        ArrayTabulatedFunction function1 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{2, 4, 6});
+        ArrayTabulatedFunction function2 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{2, 4, 6});
+        assertEquals(function1.hashCode(), function2.hashCode());
     }
 }
