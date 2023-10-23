@@ -1,6 +1,8 @@
 package functions;
+
 import org.junit.Test;
 import junit.framework.Assert;
+
 public class SqrFunctionTest {
     MathFunction test0 = new SqrFunction();
 

@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 public class CompositeFunctionTest {
 
     MathFunction cos2xFunc = new Cos2xFunction();
@@ -11,8 +12,9 @@ public class CompositeFunctionTest {
     MathFunction unitFunc = new UnitFunction();
     MathFunction test3 = new CompositeFunction(sqrFunc, cos2xFunc);
     MathFunction test4 = new CompositeFunction(cos2xFunc, unitFunc);
+
     @Test
-    public void TestEquals(){
+    public void TestEquals() {
         assertEquals(1.0, test3.apply(0));
         assertEquals(1.0, test4.apply(0));
     }

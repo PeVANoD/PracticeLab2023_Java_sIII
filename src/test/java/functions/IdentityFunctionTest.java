@@ -1,13 +1,17 @@
 package functions;
+
 import org.junit.Test;
+
 import static org.junit.Assert.*;
+
 import junit.framework.Assert;
 
 
 public class IdentityFunctionTest {
     MathFunction test1 = new IdentityFunction();
+
     @Test
-    public void testEquals(){
+    public void testEquals() {
         Assert.assertEquals(15.0, test1.apply(15));
     }
 
@@ -26,8 +30,8 @@ public class IdentityFunctionTest {
 
     @Test
     public void testClone() throws CloneNotSupportedException {
-    	IdentityFunction identityFunction1 = new IdentityFunction();
-    	IdentityFunction identityFunction2 = identityFunction1.clone();
-    	assertEquals(identityFunction1, identityFunction2);
+        IdentityFunction identityFunction1 = new IdentityFunction();
+        IdentityFunction identityFunction2 = identityFunction1.clone();
+        assertEquals(identityFunction1, identityFunction2);
     }
 }

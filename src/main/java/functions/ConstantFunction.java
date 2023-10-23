@@ -1,4 +1,5 @@
 package functions;
+
 public class ConstantFunction implements MathFunction {
     private final double constant;
 

@@ -3,7 +3,7 @@ package functions;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class LinkedListTabulatedFunction  extends AbstractTabulatedFunction implements TabulatedFunction {
+public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction {
     static class Node {
 
         public double x;
@@ -133,23 +133,23 @@ public class LinkedListTabulatedFunction  extends AbstractTabulatedFunction impl
     }
 
     public double getX(int index) {
-        Node temp=getNode(index);
+        Node temp = getNode(index);
         return temp.x;
     }
 
     public double getY(int index) {
-        Node temp=getNode(index);
+        Node temp = getNode(index);
         return temp.y;
     }
 
     public void setY(int index, double value) {
 
-        Node temp=getNode(index);
+        Node temp = getNode(index);
         temp.y = value;
 
     }
 
-    public  int indexOfX(double x) {
+    public int indexOfX(double x) {
         int index = 0;
         int i = 0;
         Node temp = head;
@@ -286,6 +286,7 @@ public class LinkedListTabulatedFunction  extends AbstractTabulatedFunction impl
         hashRes = hashRes * 31 + head.prev.hashCode();
         return hashRes;
     }
+
     public Object clone() {
         double[] XArray = new double[count];
         double[] YArray = new double[count];

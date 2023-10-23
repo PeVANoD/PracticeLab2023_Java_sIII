@@ -2,7 +2,7 @@ package functions;
 
 import java.util.Arrays;
 
-public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction{
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction {
     private double[] xValues;
     private double[] yValues;
     private int count;
@@ -13,6 +13,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         this.yValues = Arrays.copyOf(yValues, yValues.length);
 
     }
+
     public double apply(double x) {
         double result;
         if (x < xValues[0]) {
@@ -28,6 +29,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
         return result;
     }
+
     public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
         this.count = count;
         double[] myArrayX = new double[count];
@@ -93,7 +95,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         return -1;
     }
 
-    public  int indexOfY(double y) {
+    public int indexOfY(double y) {
         int index = 0;
         while (index <= count - 1) {
             if (yValues[index] == y) return index;
@@ -126,7 +128,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     }
 
-    protected  double extrapolateLeft(double x) {
+    protected double extrapolateLeft(double x) {
         if (count == 1) return yValues[0];
         else
             return (yValues[0] + (((yValues[1] - yValues[0]) / (xValues[1] - xValues[0])) * (x - xValues[0])));
@@ -143,6 +145,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         else
             return (leftY + (((rightY - leftY) / (rightX - leftX)) * (x - leftX)));
     }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
@@ -154,7 +157,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
         sb.append("]");
         return sb.toString();
-    } @Override
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ArrayTabulatedFunction)) return false;
