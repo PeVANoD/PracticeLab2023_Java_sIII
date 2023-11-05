@@ -1,8 +1,10 @@
 package functions;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.NoSuchElementException;
 public class ArrayTabulatedFunctionTest {
     double[] xValue = {1, 1.5, 2, 2.5, 3};
     double[] yValue = {2, 3, 4, 5, 6};
@@ -108,7 +110,7 @@ public class ArrayTabulatedFunctionTest {
     }
     @Test
     void toStringTest() {
-        assertEquals("[(1.0, 2.0), (1.5, 3.0), (2.0, 4.0), (2.5, 5.0), (3.0, 6.0)]", arrayTabulatedFunction.toString());
+        assertEquals("(1.0;2.0) (1.5;3.0) (2.0;4.0) (2.5;5.0) (3.0;6.0) ", arrayTabulatedFunction.toString());
         assertNotEquals("(0;0)", arrayTabulatedFunction.toString());
     }
 
@@ -122,5 +124,51 @@ public class ArrayTabulatedFunctionTest {
         ArrayTabulatedFunction function1 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{2, 4, 6});
         ArrayTabulatedFunction function2 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{2, 4, 6});
         assertEquals(function1.hashCode(), function2.hashCode());
+    }
+
+    @Test
+    public void testIterator_withEmptyFunction() {
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(new double[0], new double[0]);
+        Iterator<Point> iterator = function.iterator();
+
+        assertFalse(iterator.hasNext(), "Expected iterator not to have next element");
+        assertThrows(NoSuchElementException.class, iterator::next, "Expected NoSuchElementException to be thrown");
+    }
+
+    @Test
+    public void testIterator_withNonEmptyFunction() {
+        double[] xValues = {1, 2, 3};
+        double[] yValues = {4, 5, 6};
+
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+        Iterator<Point> iterator = function.iterator();
+
+        int i = 0;
+        while (iterator.hasNext()) {
+            Point point = iterator.next();
+            assertEquals(xValues[i], point.x, "Expected x value to match");
+            assertEquals(yValues[i], point.y, "Expected y value to match");
+            i++;
+        }
+
+        assertEquals(xValues.length, i, "Expected iterator to iterate over all elements");
+        assertThrows(NoSuchElementException.class, iterator::next, "Expected NoSuchElementException to be thrown after iterating through all elements");
+    }
+    @Test
+    void IteratorTestException() {
+        Iterator<Point> iterator = arrayTabulatedFunction.iterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            Point point = iterator.next();
+            assertEquals(xValue[i], point.x);
+            assertEquals(yValue[i], point.y);
+            ++i;
+        }
+        i = 0;
+        for (Point point : arrayTabulatedFunction) {
+            assertEquals(xValue[i], point.x);
+            assertEquals(yValue[i], point.y);
+            ++i;
+        }
     }
 }

@@ -1,7 +1,8 @@
 package functions;
-
+import exceptions.InterpolationException;
+import java.util.Iterator;
 import java.util.Arrays;
-
+import java.util.NoSuchElementException;
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction {
     private double[] xValues;
     private double[] yValues;
@@ -11,6 +12,12 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         this.count = xValues.length;
         this.xValues = Arrays.copyOf(xValues, xValues.length);
         this.yValues = Arrays.copyOf(yValues, yValues.length);
+        checkLengthIsTheSame(xValues, yValues);
+        checkSorted(xValues);
+
+    }
+
+    public ArrayTabulatedFunction() {
 
     }
 
@@ -116,15 +123,15 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     protected double interpolate(double x, int floorIndex) {
-        if (count == 1) {
-            return yValues[0];
-        } else {
+        if (x < floorIndex && x > floorIndex - 1) {
+
             double leftX = getX(floorIndex - 1);
             double rightX = getX(floorIndex);
             double leftY = getY(floorIndex - 1);
             double rightY = getY(floorIndex);
             return interpolate(x, leftX, rightX, leftY, rightY);
-        }
+
+        } else throw new InterpolationException("Interpolation point is out of range");
 
     }
 
@@ -166,11 +173,11 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         ArrayTabulatedFunction that = (ArrayTabulatedFunction) o;
         if (count != that.count) return false;
         for (int i = 0; i < count; i++) {
-            if (this.xValues[i] != that.xValues[i] || this.yValues[i] != that.yValues[i]) {
+            if (this.xValues != that.xValues || this.yValues != that.yValues) {
                 return false;
             }
         }
-        return true;
+        return this.hashCode() == that.hashCode();
     }
 
     @Override
@@ -189,4 +196,28 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             throw new AssertionError();
         }
     }
+
+    public Iterator<Point> iterator() {
+        return new Iterator<Point>() {
+            private int i = 0;
+
+            @Override
+            public boolean hasNext() {
+                return i < count;
+            }
+
+            @Override
+            public Point next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+
+                Point point = new Point(xValues[i], yValues[i]);
+                i++;
+
+                return point;
+            }
+        };
+    }
+
 }

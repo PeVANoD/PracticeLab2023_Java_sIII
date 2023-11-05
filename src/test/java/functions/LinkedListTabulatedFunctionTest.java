@@ -1,7 +1,11 @@
 package functions;
 
 import org.junit.jupiter.api.Test;
-
+import exceptions.ArrayIsNotSortedException;
+import exceptions.DifferentLengthOfArraysException;
+import exceptions.InterpolationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LinkedListTabulatedFunctionTest {
@@ -185,4 +189,107 @@ class LinkedListTabulatedFunctionTest {
         Object linkCopy = linkedListTabulatedFunction.clone();
         assertTrue(linkedListTabulatedFunction.equals(linkCopy));
     }
+
+    void LinkedListTwoTestException() {
+        double[] xValue2 = {5};
+        double[] yValue2 = {2};
+        assertThrows(IllegalArgumentException.class, () -> {
+            LinkedListTabulatedFunction link = new LinkedListTabulatedFunction(xValue2, yValue2);
+        });
+
+    }
+
+
+    @Test
+    void getNodeException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            linkedListTabulatedFunction.getNode(10);
+        });
+
+    }
+
+    @Test
+    void getXException() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            linkedListTabulatedFunction.getX(10);
+        });
+
+    }
+
+    @Test
+    void getYException() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            linkedListTabulatedFunction.getY(-10);
+        });
+    }
+
+    @Test
+    void setYException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            linkedListTabulatedFunction.setY(13, 10);
+        });
+
+    }
+
+    @Test
+    void indexOfXException() {
+        assertThrows(NoSuchElementException.class, () -> {
+            linkedListTabulatedFunction.indexOfX(2.21);
+        });
+    }
+
+    @Test
+    void floorIndexOfXException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            linkedListTabulatedFunction.floorIndexOfX(-2);
+        });
+    }
+
+    @Test
+    void LinkedListTabulatedFunctionLengthException() {
+        double[] xValue2 = {5, 6, 5};
+        double[] yValue2 = {2, 6, 7, 95};
+        assertThrows(DifferentLengthOfArraysException.class, () -> {
+            LinkedListTabulatedFunction linkedListTabulatedFunction2 = new LinkedListTabulatedFunction(xValue2, yValue2);
+        });
+    }
+
+    @Test
+    void LinkedListTabulatedFunctionSortedException() {
+        double[] xValue2 = {2, 3, 4, 17, 3, 45, 0};
+        double[] yValue2 = {2, 34, 5, 56, 7, 6, 5};
+        assertThrows(ArrayIsNotSortedException.class, () -> {
+            LinkedListTabulatedFunction linkedListTabulatedFunction25 = new LinkedListTabulatedFunction(xValue2, yValue2);
+        });
+    }
+
+    @Test
+    void LinkedListInterpolateTestException() {
+        assertThrows(InterpolationException.class, () -> {
+            linkedListTabulatedFunction.interpolate(2.5, 2);
+        });
+    }
+    @Test
+    void LinkedListIteratorTestException(){
+        Iterator<Point> iterator= linkedListTabulatedFunction.iterator();
+        LinkedListTabulatedFunction.Node node=  linkedListTabulatedFunction.getNode(0);
+        while(iterator.hasNext())
+        {
+            Point point=iterator.next();
+            assertEquals(node.x,point.x);
+            assertEquals(node.y,point.y);
+            node=node.next;
+        }
+        node= linkedListTabulatedFunction.getNode(0);
+        for(Point point: linkedListTabulatedFunction)
+        {
+            assertEquals(node.x,point.x);
+            assertEquals(node.y,point.y);
+            node=node.next;
+        }
+
+    }
+
 }
