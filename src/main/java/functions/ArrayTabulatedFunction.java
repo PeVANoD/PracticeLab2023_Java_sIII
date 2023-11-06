@@ -111,7 +111,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         return -1;
     }
 
-    protected int floorIndexOfX(double x) {
+    public int floorIndexOfX(double x) {
         if (xValues[0] > x) return 0;
         else if (xValues[count - 1] < x) return count;
         else {
@@ -135,19 +135,19 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     }
 
-    protected double extrapolateLeft(double x) {
+    public double extrapolateLeft(double x) {
         if (count == 1) return yValues[0];
         else
             return (yValues[0] + (((yValues[1] - yValues[0]) / (xValues[1] - xValues[0])) * (x - xValues[0])));
     }
 
-    protected double extrapolateRight(double x) {
+    public double extrapolateRight(double x) {
         if (count == 1) return yValues[0];
         else
             return (yValues[count - 2] + (((yValues[count - 1] - yValues[count - 2]) / (xValues[count - 1] - xValues[count - 2])) * (x - xValues[count - 2])));
     }
 
-    protected double interpolate(double x, double leftX, double rightX, double leftY, double rightY) {
+    public double interpolate(double x, double leftX, double rightX, double leftY, double rightY) {
         if (count == 1) return yValues[0];
         else
             return (leftY + (((rightY - leftY) / (rightX - leftX)) * (x - leftX)));
@@ -169,15 +169,14 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ArrayTabulatedFunction)) return false;
-        ArrayTabulatedFunction that = (ArrayTabulatedFunction) o;
+        if (!(o instanceof ArrayTabulatedFunction that)) return false;
         if (count != that.count) return false;
         for (int i = 0; i < count; i++) {
-            if (this.xValues != that.xValues || this.yValues != that.yValues) {
+            if (this.xValues[i] != that.xValues[i] || this.yValues[i] != that.yValues[i]) {
                 return false;
             }
         }
-        return this.hashCode() == that.hashCode();
+        return true;
     }
 
     @Override
@@ -220,4 +219,22 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         };
     }
 
+    @Override
+    public Point[] asPoints() {
+        Point[] points = new Point[count];
+        for (int i = 0; i < count; i++) {
+            points[i] = new Point(xValues[i], yValues[i]);
+        }
+        return points;
+    }
+
+    @Override
+    public double[] getXValues() {
+        return new double[0];
+    }
+
+    @Override
+    public double[] getYValues() {
+        return new double[0];
+    }
 }

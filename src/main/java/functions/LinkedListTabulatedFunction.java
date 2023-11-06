@@ -7,14 +7,14 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction {
-    static class Node {
+    public static class Node {
 
         public double x;
         public double y;
         public Node next;
         public Node prev;
 
-        Node(double x, double y) {
+        public Node(double x, double y) {
             this.x = x;
             this.y = y;
         }
@@ -128,7 +128,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         return head.prev.x;
     }
 
-    Node getNode(int index) {
+    public Node getNode(int index) {
         if (index < 0 || index > count - 1) {
             throw new IllegalArgumentException("Неверный индекс");
         } else {
@@ -206,7 +206,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
 
-    protected int floorIndexOfX(double x) {
+    public int floorIndexOfX(double x) {
         int index = 0;
         if (head.x > x) {
             throw new IllegalArgumentException("Нарушение левой границы");
@@ -227,7 +227,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     }
 
-    protected double interpolate(double x, int floorIndex) {
+    public double interpolate(double x, int floorIndex) {
         if (floorIndex < 0 && floorIndex > count - 1)
             throw new IllegalArgumentException("Промежуток отсутствует");
         if (x <= floorIndex && x >= floorIndex - 1) {
@@ -241,13 +241,13 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         } else throw new InterpolationException("X не в интервале");
     }
 
-    protected double extrapolateLeft(double x) {
+    public double extrapolateLeft(double x) {
         if (head.next == head) {
             return head.y;
         } else return (head.y + (((head.prev.y - head.y) / (head.prev.x - head.x)) * (x - head.x)));
     }
 
-    protected double extrapolateRight(double x) {
+    public double extrapolateRight(double x) {
         if (head.next == head) {
             return head.y;
         } else
@@ -337,5 +337,20 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
                 else throw new NoSuchElementException();
             }
         };
+    }
+
+    @Override
+    public Point[] asPoints() {
+        return new Point[0];
+    }
+
+    @Override
+    public double[] getXValues() {
+        return new double[0];
+    }
+
+    @Override
+    public double[] getYValues() {
+        return new double[0];
     }
 }

@@ -5,7 +5,9 @@ import functions.TabulatedFunction;
 import functions.Point;
 import functions.factory.ArrayTabulatedFunctionFactory;
 import functions.factory.TabulatedFunctionFactory;
+
 public class TabulatedFunctionOperationService {
+
 
     protected TabulatedFunctionFactory factory;
 
@@ -25,6 +27,18 @@ public class TabulatedFunctionOperationService {
         return this.factory;
     }
 
+    public static Point[] asPoints(TabulatedFunction tabulatedFunction) {
+
+        Point[] asPointsArray = new Point[tabulatedFunction.getCount()];
+        int i = 0;
+        for (Point point : tabulatedFunction) {
+            asPointsArray[i] = point;
+            ++i;
+        }
+        return asPointsArray;
+    }
+
+
     TabulatedFunction doOperation(TabulatedFunction a, TabulatedFunction b, BiOperation operation) {
 
         if (a.getCount() != b.getCount()) throw new InconsistentFunctionsException();
@@ -43,26 +57,17 @@ public class TabulatedFunctionOperationService {
             return factory.create(xValue, yValue);
         }
     }
-    public static Point[] asPoints(TabulatedFunction tabulatedFunction) {
 
-        Point[] asPointsArray = new Point[tabulatedFunction.getCount()];
-        int i = 0;
-        for (Point point : tabulatedFunction) {
-            asPointsArray[i] = point;
-            ++i;
-        }
-        return asPointsArray;
-    }
-    public TabulatedFunction add(TabulatedFunction a, TabulatedFunction b) {
-        return doOperation(a, b, Double::sum);
+    public TabulatedFunction add(TabulatedFunction firstFunction, TabulatedFunction secondFunction) {
+        BiOperation operation = (u, v) -> u + v;
+        return doOperation(firstFunction, secondFunction, operation);
     }
 
-    public TabulatedFunction subtraction(TabulatedFunction a, TabulatedFunction b) {
-        return doOperation(a, b, (u, v) -> u - v);
+    public TabulatedFunction subtraction(TabulatedFunction firstFunction, TabulatedFunction secondFunction) {
+        BiOperation operation = (u, v) -> u - v;
+        return doOperation(firstFunction, secondFunction, operation);
     }
-    private interface BiOperation {
-        double apply(double u, double v);
-    }
+
     public TabulatedFunction multiplication(TabulatedFunction firstFunction, TabulatedFunction secondFunction) {
         BiOperation operation = (u, v) -> u * v;
         return doOperation(firstFunction, secondFunction, operation);
@@ -72,5 +77,7 @@ public class TabulatedFunctionOperationService {
         BiOperation operation = (u, v) -> u / v;
         return doOperation(firstFunction, secondFunction, operation);
     }
-
+    private interface BiOperation {
+        double apply(double u, double v);
+    }
 }
