@@ -21,5 +21,9 @@ public interface TabulatedFunction extends Iterable<Point>, MathFunction {
     double rightBound();
 
     Iterator<Point> iterator();
+    Point[] asPoints();
 
+    double[] getXValues();
+
+    double[] getYValues();
 }
