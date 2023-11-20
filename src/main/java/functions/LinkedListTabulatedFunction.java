@@ -1,13 +1,15 @@
 package functions;
 
+import java.io.Serializable;
 import exceptions.InterpolationException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.io.Serial;
 
-public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction {
-    public static class Node {
+public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Serializable {
+    public static class Node implements Serializable{
 
         public double x;
         public double y;
@@ -276,6 +278,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         return result;
     }
 
+    /*
     public String toString() {
         String XYStr = "";
         for (Node temp = head; temp != head.prev; temp = temp.next) {
@@ -285,7 +288,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
         XYStr += "(" + String.valueOf(head.prev.x) + ";" + String.valueOf(head.prev.y) + ")" + " ";
         return XYStr;
-    }
+    }*/
 
     public boolean equals(Object o) {
         LinkedListTabulatedFunction temp = (LinkedListTabulatedFunction) o;
@@ -353,4 +356,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     public double[] getYValues() {
         return new double[0];
     }
+    @Serial
+    private static final long serialVersionUID= 2L;
 }

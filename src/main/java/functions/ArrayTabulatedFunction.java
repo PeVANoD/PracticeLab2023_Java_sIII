@@ -2,6 +2,7 @@ package functions;
 
 import exceptions.InterpolationException;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -17,10 +18,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         this.yValues = Arrays.copyOf(yValues, yValues.length);
         checkLengthIsTheSame(xValues, yValues);
         checkSorted(xValues);
-
-    }
-
-    public ArrayTabulatedFunction() {
 
     }
 
@@ -227,5 +224,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     public double[] getYValues() {
         return new double[0];
     }
-
+    @Serial
+    private static final long serialVersionUID = 1L;
 }
