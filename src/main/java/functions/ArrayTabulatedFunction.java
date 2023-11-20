@@ -1,9 +1,12 @@
 package functions;
+
 import exceptions.InterpolationException;
-import java.util.Iterator;
+
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
-public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction {
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction, Serializable {
     private double[] xValues;
     private double[] yValues;
     private int count;
@@ -123,16 +126,10 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     protected double interpolate(double x, int floorIndex) {
-        if (x < floorIndex && x > floorIndex - 1) {
+        if (getX(floorIndex) >= x)
+            throw new InterpolationException("Range error for interpolation");
 
-            double leftX = getX(floorIndex - 1);
-            double rightX = getX(floorIndex);
-            double leftY = getY(floorIndex - 1);
-            double rightY = getY(floorIndex);
-            return interpolate(x, leftX, rightX, leftY, rightY);
-
-        } else throw new InterpolationException("Interpolation point is out of range");
-
+        return interpolate(x, getX(floorIndex), getX(floorIndex + 1), getY(floorIndex), getY(floorIndex + 1));
     }
 
     public double extrapolateLeft(double x) {
@@ -169,31 +166,24 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ArrayTabulatedFunction that)) return false;
-        if (count != that.count) return false;
-        for (int i = 0; i < count; i++) {
-            if (this.xValues[i] != that.xValues[i] || this.yValues[i] != that.yValues[i]) {
-                return false;
-            }
-        }
-        return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArrayTabulatedFunction that = (ArrayTabulatedFunction) o;
+        return Arrays.equals(xValues, that.xValues) && Arrays.equals(yValues, that.yValues);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(xValues) ^ Arrays.hashCode(yValues);
+        int result = Arrays.hashCode(xValues);
+        result = 31 * result + Arrays.hashCode(yValues);
+        return result;
     }
 
     @Override
-    public Object clone() {
-        try {
-            ArrayTabulatedFunction clone = (ArrayTabulatedFunction) super.clone();
-            clone.xValues = Arrays.copyOf(this.xValues, this.count);
-            clone.yValues = Arrays.copyOf(this.yValues, this.count);
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public ArrayTabulatedFunction clone() {
+        double[] clonedXValues = Arrays.copyOf(xValues, xValues.length);
+        double[] clonedYValues = Arrays.copyOf(yValues, yValues.length);
+
+        return new ArrayTabulatedFunction(clonedXValues, clonedYValues);
     }
 
     public Iterator<Point> iterator() {
@@ -237,4 +227,5 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     public double[] getYValues() {
         return new double[0];
     }
+
 }

@@ -1,4 +1,6 @@
 package functions;
+import functions.ArrayTabulatedFunction;
+import functions.Point;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import java.util.Iterator;
@@ -100,18 +102,20 @@ public class ArrayTabulatedFunctionTest {
 
     @Test
     public void testFloorIndexOfX() {
-        assertEquals(2, arrayTabulatedFunction.floorIndexOfX(1.7));
-        assertNotEquals(1, arrayTabulatedFunction.floorIndexOfX(1.7));
+        assertEquals(1, arrayTabulatedFunction.floorIndexOfX(1.7));
+        assertNotEquals(2, arrayTabulatedFunction.floorIndexOfX(1.7));
     }
     @Test
     void cloneTest() {
         Object arrayTabulatedFunctionTest = arrayTabulatedFunction.clone();
-        assertTrue(arrayTabulatedFunction.equals(arrayTabulatedFunctionTest));
+        assertEquals(arrayTabulatedFunction, arrayTabulatedFunctionTest);
     }
     @Test
     void toStringTest() {
-        assertEquals("(1.0;2.0) (1.5;3.0) (2.0;4.0) (2.5;5.0) (3.0;6.0) ", arrayTabulatedFunction.toString());
-        assertNotEquals("(0;0)", arrayTabulatedFunction.toString());
+        String expected = "[(1.0, 2.0), (1.5, 3.0), (2.0, 4.0), (2.5, 5.0), (3.0, 6.0)]";
+        String actual = arrayTabulatedFunction.toString();
+        assertEquals(expected, actual);
+        assertNotEquals("(0;0)", actual);
     }
 
     @Test

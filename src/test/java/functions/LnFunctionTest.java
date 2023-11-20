@@ -8,6 +8,6 @@ public class LnFunctionTest {
 
     @Test
     public void testEquals() {
-        Assert.assertEquals(0, test2.apply(1));
+        Assert.assertEquals(0.0, test2.apply(1));
     }
 }
