@@ -4,11 +4,11 @@ import exceptions.ArrayIsNotSortedException;
 import exceptions.DifferentLengthOfArraysException;
 import exceptions.InterpolationException;
 import org.junit.jupiter.api.Test;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 class LinkedListTabulatedFunctionTest {
 
     double[] xValue = {1, 1.5, 2, 2.5, 3};
@@ -111,8 +111,8 @@ class LinkedListTabulatedFunctionTest {
     void toStringNodeTest() {
         LinkedListTabulatedFunction.Node node = new LinkedListTabulatedFunction.Node(5, 2);
         String str = node.toString();
-        assertEquals("(5.0;2.0), где 5.0 и 2.0 – абсцисса и ордината точки соответственно.", node.toString());
-        assertNotEquals("(5.1;2.1), где 5.1 и 2.1 – абсцисса и ордината точки соответственно.", node.toString());
+        assertEquals("(5.0;2.0), где 5.0 и 2.0 – абсцисса и ордината точки", node.toString());
+        assertNotEquals("(5.1;2.1), где 5.1 и 2.1 – абсцисса и ордината точки", node.toString());
 
     }
 
@@ -282,5 +282,4 @@ class LinkedListTabulatedFunctionTest {
     void toStringBuilderLinkTest() {
         assertEquals(linkedListTabulatedFunction.toString(), "LinkedListTabulatedFunction size = 5\n[1.0; 2.0]\n[1.5; 3.0]\n[2.0; 4.0]\n[2.5; 5.0]\n[3.0; 6.0]\n");
     }
-
 }

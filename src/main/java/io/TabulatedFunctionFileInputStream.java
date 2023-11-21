@@ -1,7 +1,7 @@
 package io;
 
 import functions.TabulatedFunction;
-import  functions.factory.TabulatedFunctionFactory;
+import functions.factory.TabulatedFunctionFactory;
 import functions.factory.ArrayTabulatedFunctionFactory;
 import functions.factory.LinkedListTabulatedFunctionFactory;
 import operations.TabulatedDifferentialOperator;

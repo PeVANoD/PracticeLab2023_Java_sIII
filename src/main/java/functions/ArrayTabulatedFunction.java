@@ -206,24 +206,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         };
     }
 
-    @Override
-    public Point[] asPoints() {
-        Point[] points = new Point[count];
-        for (int i = 0; i < count; i++) {
-            points[i] = new Point(xValues[i], yValues[i]);
-        }
-        return points;
-    }
-
-    @Override
-    public double[] getXValues() {
-        return new double[0];
-    }
-
-    @Override
-    public double[] getYValues() {
-        return new double[0];
-    }
     @Serial
     private static final long serialVersionUID = 1L;
 }

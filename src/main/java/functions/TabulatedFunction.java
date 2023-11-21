@@ -1,13 +1,9 @@
 package functions;
 
-import java.util.Iterator;
-
-public interface TabulatedFunction extends Iterable<Point>, MathFunction {
-
+public interface TabulatedFunction extends MathFunction, Iterable<Point> {
     int getCount();
 
     double getX(int index);
-
     double getY(int index);
 
     void setY(int index, double value);
@@ -20,10 +16,4 @@ public interface TabulatedFunction extends Iterable<Point>, MathFunction {
 
     double rightBound();
 
-    Iterator<Point> iterator();
-    Point[] asPoints();
-
-    double[] getXValues();
-
-    double[] getYValues();
 }

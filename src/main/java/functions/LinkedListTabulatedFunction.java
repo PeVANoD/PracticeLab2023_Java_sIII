@@ -1,33 +1,36 @@
 package functions;
 
-import java.io.Serializable;
 import exceptions.InterpolationException;
+
+import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.io.Serial;
+import java.util.Objects;
 
-public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Serializable {
-    public static class Node implements Serializable{
+
+public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Serializable, TabulatedFunction {
+    static class Node implements Serializable{
 
         public double x;
         public double y;
         public Node next;
         public Node prev;
 
-        public Node(double x, double y) {
+        Node(double x, double y) {
             this.x = x;
             this.y = y;
         }
 
+        @Override
         public String toString() {
             String StrX = String.valueOf(x);
             String StrY = String.valueOf(y);
 
-            return ("(" + StrX + ";" + StrY + ")" + ", где " + StrX + " и " + StrY + " – абсцисса и ордината точки соответственно.");
+            return ("(" + StrX + ";" + StrY + ")" + ", где " + StrX + " и " + StrY + " – абсцисса и ордината точки");
         }
 
+        @Override
         public Object clone() {
             Node cloneNode = new Node(x, y);
             cloneNode.prev = this.prev;
@@ -35,6 +38,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             return cloneNode;
         }
 
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -42,14 +46,14 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             return Double.compare(x, node.x) == 0 && Double.compare(y, node.y) == 0 && Objects.equals(next, node.next) && Objects.equals(prev, node.prev);
         }
 
+        @Override
         public int hashCode() {
             int result = 31 * Double.hashCode(x);
             result = 31 * result + Double.hashCode(y);
             return result;
         }
-
     }
-
+    private static final long serialVersionUID= 1L;
     private int count;
     private Node head;
 
@@ -71,7 +75,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
         if (xValues.length < 2) {
-            throw new IllegalArgumentException("Неверная длина");
+            throw new IllegalArgumentException("Длина меньше минимальной");
         } else {
             checkLengthIsTheSame(xValues, yValues);
             checkSorted(xValues);
@@ -82,40 +86,44 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-        if (xFrom > xTo) {
 
-            double step = (xFrom - xTo) / count - 1;
-            for (int i = 0; i < count; ++i) {
-                addNode((xTo + (i * step)), source.apply(xTo + (i * step)));
-            }
-
-        } else if (xTo > xFrom) {
-            double step = (xTo - xFrom) / count;
-            for (int i = 0; i < count; ++i) {
-                addNode((xFrom + (i * step)), source.apply(xFrom + (i * step)));
-            }
-
+        if (count < 2) {
+            throw new IllegalArgumentException("Длина меньше минимальной");
         } else {
-            for (int i = 0; i < count; ++i) {
-                addNode(xFrom, source.apply(xFrom));
+            if (xFrom > xTo) {
+
+                double step = (xFrom - xTo) / count - 1;
+                for (int i = 0; i < count; ++i) {
+                    addNode((xTo + (i * step)), source.apply(xTo + (i * step)));
+                }
+
+            } else if (xTo > xFrom) {
+                double step = (xTo - xFrom) / count;
+                for (int i = 0; i < count; ++i) {
+                    addNode((xFrom + (i * step)), source.apply(xFrom + (i * step)));
+                }
+
+            } else {
+                for (int i = 0; i < count; ++i) {
+                    addNode(xFrom, source.apply(xFrom));
+                }
+
             }
-
         }
-
     }
 
     public double[][] arrayLink() {
-        double[] XArray = new double[count];
-        double[] YArray = new double[count];
+        double[] xArray = new double[count];
+        double[] yArray = new double[count];
         int i = 0;
         for (Node temp = head; temp != head.prev; temp = temp.next) {
-            XArray[i] = temp.x;
-            YArray[i] = temp.y;
+            xArray[i] = temp.x;
+            yArray[i] = temp.y;
             i++;
         }
-        XArray[count - 1] = head.prev.x;
-        YArray[count - 1] = head.prev.y;
-        return new double[][]{XArray, YArray};
+        xArray[count - 1] = head.prev.x;
+        yArray[count - 1] = head.prev.y;
+        return new double[][]{xArray, yArray};
     }
 
     public int getCount() {
@@ -130,9 +138,9 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         return head.prev.x;
     }
 
-    public Node getNode(int index) {
+    Node getNode(int index) {
         if (index < 0 || index > count - 1) {
-            throw new IllegalArgumentException("Неверный индекс");
+            throw new IllegalArgumentException("Индекс не пренадлежит нужному промежутку");
         } else {
             if (index == 0) {
                 return head;
@@ -148,7 +156,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     public double getX(int index) {
         if (index < 0 || index > count - 1) {
-            throw new IllegalArgumentException("Неверный индекс");
+            throw new IllegalArgumentException("Индекс не пренадлежит нужному промежутку");
         } else {
             Node temp = getNode(index);
             return temp.x;
@@ -157,7 +165,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     public double getY(int index) {
         if (index < 0 && index > count - 1) {
-            throw new IllegalArgumentException("Неверный индекс");
+            throw new IllegalArgumentException("Индекс не прендлежит нужному промежутку");
         } else {
             Node temp = getNode(index);
             return temp.y;
@@ -167,7 +175,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     public void setY(int index, double value) {
 
         if (index < 0 && index > count - 1) {
-            throw new IllegalArgumentException("Неверный индекс");
+            throw new IllegalArgumentException("Индекс не прендлежит нужному промежутку");
         } else {
             Node temp = getNode(index);
             temp.y = value;
@@ -187,8 +195,10 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         if (temp == head.prev) {
             if (temp.x == x) {
                 return index;
-            } else throw new NoSuchElementException("Нет искомого значения");
+            } else throw new NoSuchElementException("Искомое знаечние не найдено");
         } else return index;
+
+
     }
 
     public int indexOfY(double y) {
@@ -203,18 +213,19 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         if (temp == head.prev) {
             if (temp.y == y) {
                 return index;
-            } else throw new NoSuchElementException("Нет искомого значения");
+            } else throw new NoSuchElementException("Искомое знаечние не найдено");
         } else return index;
+
+
     }
 
 
-    public int floorIndexOfX(double x) {
+    protected int floorIndexOfX(double x) {
         int index = 0;
         if (head.x > x) {
-            throw new IllegalArgumentException("Нарушение левой границы");
-        } else if (head.prev.x < x) {
-            return count;
-        } else {
+            throw new IllegalArgumentException("Число лежит за левой границей");
+        } else if (head.prev.x < x) return count;
+        else {
             for (Node temp = head; ; temp = temp.next) {
                 if (temp.x == x) {
                     return index;
@@ -229,9 +240,9 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     }
 
-    public double interpolate(double x, int floorIndex) {
+    protected double interpolate(double x, int floorIndex) {
         if (floorIndex < 0 && floorIndex > count - 1)
-            throw new IllegalArgumentException("Промежуток отсутствует");
+            throw new IllegalArgumentException("Нужного промежутка не существует");
         if (x <= floorIndex && x >= floorIndex - 1) {
 
             double leftX = getX(floorIndex - 1);
@@ -240,26 +251,22 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             double rightY = getY(floorIndex);
             return interpolate(x, leftX, rightX, leftY, rightY);
 
-        } else throw new InterpolationException("X не в интервале");
+        } else throw new InterpolationException("X не лежит в интервале");
+
     }
 
-    public double extrapolateLeft(double x) {
-        if (head.next == head) {
-            return head.y;
-        } else return (head.y + (((head.prev.y - head.y) / (head.prev.x - head.x)) * (x - head.x)));
+    protected double extrapolateLeft(double x) {
+        return (head.y + (((head.next.y - head.y) / (head.next.x - head.x)) * (x - head.x)));
+
     }
 
-    public double extrapolateRight(double x) {
-        if (head.next == head) {
-            return head.y;
-        } else
-            return (head.prev.prev.y + (((head.prev.y - head.prev.prev.y) / (head.prev.x - head.prev.prev.x)) * (x - head.prev.prev.x)));
+    protected double extrapolateRight(double x) {
+
+        return (head.prev.prev.y + (((head.prev.y - head.prev.prev.y) / (head.prev.x - head.prev.prev.x)) * (x - head.prev.prev.x)));
     }
 
     protected double interpolate(double x, double leftX, double rightX, double leftY, double rightY) {
-        if (head.next == head) {
-            return head.y;
-        } else return (leftY + (((rightY - leftY) / (rightX - leftX)) * (x - leftX)));
+        return (leftY + (((rightY - leftY) / (rightX - leftX)) * (x - leftX)));
     }
 
     public double apply(double x) {
@@ -269,7 +276,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         } else if (x > head.prev.x) {
             result = extrapolateRight(x);
         } else {
-            if (indexOfX(x) != -1) {
+            if (0 <= indexOfX(x) && indexOfX(x) <= count - 1) {
                 result = getY(indexOfX(x));
             } else {
                 result = interpolate(x, floorIndexOfX(x));
@@ -278,84 +285,67 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         return result;
     }
 
-    /*
-    public String toString() {
-        String XYStr = "";
-        for (Node temp = head; temp != head.prev; temp = temp.next) {
-            String XStr = String.valueOf(temp.x);
-            String YStr = String.valueOf(temp.y);
-            XYStr += "(" + XStr + ";" + YStr + ")" + " ";
-        }
-        XYStr += "(" + String.valueOf(head.prev.x) + ";" + String.valueOf(head.prev.y) + ")" + " ";
-        return XYStr;
-    }*/
 
+    @Override
+    public int hashCode() {
+        int hashResult = 19;
+        for (Node temp = head; temp != head.prev; temp = temp.next) {
+
+            hashResult = hashResult * 31 + temp.hashCode();
+        }
+        hashResult = hashResult * 31 + head.prev.hashCode();
+        return hashResult;
+    }
+
+    @Override
     public boolean equals(Object o) {
         LinkedListTabulatedFunction temp = (LinkedListTabulatedFunction) o;
         double[][] arr1 = temp.arrayLink();
         double[][] arr2 = this.arrayLink();
+
 
         if (o.getClass() == this.getClass() && Arrays.deepEquals(arr1, arr2)) {
             return true;
         } else return false;
     }
 
-    public int hashCode() {
-        int hashRes = 19;
-        for (Node temp = head; temp != head.prev; temp = temp.next) {
-
-            hashRes = hashRes * 31 + temp.hashCode();
-        }
-        hashRes = hashRes * 31 + head.prev.hashCode();
-        return hashRes;
-    }
-
+    @Override
     public Object clone() {
-        double[] XArray = new double[count];
-        double[] YArray = new double[count];
+        double[] xArray = new double[count];
+        double[] yArray = new double[count];
         int i = 0;
         for (Node temp = head; temp != head.prev; temp = temp.next) {
-            XArray[i] = temp.x;
-            YArray[i] = temp.y;
+            xArray[i] = temp.x;
+            yArray[i] = temp.y;
             i++;
         }
-        XArray[count - 1] = head.prev.x;
-        YArray[count - 1] = head.prev.y;
-        return new LinkedListTabulatedFunction(XArray, YArray);
+        xArray[count - 1] = head.prev.x;
+        yArray[count - 1] = head.prev.y;
+        return new LinkedListTabulatedFunction(xArray, yArray);
     }
 
+    @Override
     public Iterator<Point> iterator() {
         return new Iterator<Point>() {
-            private Node curNode=head;
+            private Node curNode = head;
+            private int tempCount = 0;
+
+            @Override
             public boolean hasNext() {
-                return ((curNode.next!=head)&&(curNode.next!=null));
+                return tempCount < getCount();
             }
 
+            @Override
             public Point next() {
-                if(hasNext()){
-                    Point point=new Point(curNode.x,curNode.y);
-                    curNode=curNode.next;
-                    return point;
+                if (!hasNext()) {
+                    throw new NoSuchElementException("Elements not found...");
                 }
-                else throw new NoSuchElementException();
+                Point point = new Point(curNode.x, curNode.y);
+                curNode = curNode.next;
+                this.tempCount++;
+                return point;
             }
         };
     }
 
-    @Override
-    public Point[] asPoints() {
-        return new Point[0];
-    }
-
-    @Override
-    public double[] getXValues() {
-        return new double[0];
-    }
-
-    @Override
-    public double[] getYValues() {
-        return new double[0];
-    }
-    @Serial
-    private static final long serialVersionUID= 2L;
 }
