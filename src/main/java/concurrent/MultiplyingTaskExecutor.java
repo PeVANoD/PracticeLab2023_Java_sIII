@@ -2,6 +2,9 @@ package concurrent;
 
 import functions.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class MultiplyingTaskExecutor {
@@ -12,14 +15,28 @@ public class MultiplyingTaskExecutor {
         ExecutorService executorService = Executors.newFixedThreadPool(threads);
         CountDownLatch latch = new CountDownLatch(threads);
 
+        List<MultiplyingTask> multiplyingTasks = new ArrayList<>();
+
         for (int i = 0; i < threads; i++) {
-            Runnable multTask = new MultiplyingTask(func, latch);
+            MultiplyingTask multTask = new MultiplyingTask(func, latch);
+            multiplyingTasks.add(multTask);
             executorService.execute(multTask);
         }
 
-        latch.await();
-        executorService.shutdown();
+        while (true) {
+            Iterator<MultiplyingTask> iterator = multiplyingTasks.iterator();
+            while (iterator.hasNext()) {
+                MultiplyingTask task = iterator.next();
+                if (task.isCompleted()) {
+                    iterator.remove();
+                }
+            }
+            if (multiplyingTasks.isEmpty()) {
+                break;
+            }
+        }
 
+        executorService.shutdown();
         System.out.println(func);
     }
 }
