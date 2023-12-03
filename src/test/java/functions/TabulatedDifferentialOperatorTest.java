@@ -1,13 +1,10 @@
 package functions;
 
-import operations.TabulatedDifferentialOperator;
 import functions.factory.LinkedListTabulatedFunctionFactory;
-import functions.ArrayTabulatedFunction;
-import functions.TabulatedFunction;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
+import operations.TabulatedDifferentialOperator;
 import static org.junit.jupiter.api.Assertions.*;
+
 
 public class TabulatedDifferentialOperatorTest {
     double[] xValue = {1, 2, 5, 7};

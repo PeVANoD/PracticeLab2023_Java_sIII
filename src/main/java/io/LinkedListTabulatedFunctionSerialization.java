@@ -1,11 +1,10 @@
 package io;
 
-import operations.TabulatedDifferentialOperator;
 import functions.LinkedListTabulatedFunction;
 import functions.TabulatedFunction;
 import functions.factory.TabulatedFunctionFactory;
 import functions.factory.LinkedListTabulatedFunctionFactory;
-
+import operations.TabulatedDifferentialOperator;
 import java.io.*;
 import java.io.FileInputStream;
 
