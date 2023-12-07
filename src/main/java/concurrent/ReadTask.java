@@ -9,6 +9,7 @@ public class ReadTask implements Runnable {
         this.tabulatedFunction = tabulatedFunction;
 
     }
+
     @Override
     public void run() {
         for (int i = 0; i < tabulatedFunction.getCount(); i++) {

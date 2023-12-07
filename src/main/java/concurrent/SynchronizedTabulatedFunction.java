@@ -1,8 +1,9 @@
 package concurrent;
 
+import functions.Point;
 import functions.TabulatedFunction;
 import operations.TabulatedFunctionOperationService;
-import functions.Point;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 

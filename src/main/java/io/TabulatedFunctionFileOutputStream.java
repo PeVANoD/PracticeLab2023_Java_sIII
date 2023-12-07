@@ -6,7 +6,6 @@ import functions.TabulatedFunction;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class TabulatedFunctionFileOutputStream {

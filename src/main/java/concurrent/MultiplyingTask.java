@@ -1,19 +1,23 @@
 package concurrent;
 
 import functions.TabulatedFunction;
+
 import java.util.concurrent.CountDownLatch;
 
 class MultiplyingTask implements Runnable {
     private final TabulatedFunction function;
     private final CountDownLatch latch;
     private boolean isCompleted = false;
+
     public MultiplyingTask(TabulatedFunction function, CountDownLatch latch) {
         this.function = function;
         this.latch = latch;
     }
+
     public boolean isCompleted() {
         return isCompleted;
     }
+
     @Override
     public void run() {
         for (int i = 0; i < function.getCount(); i++) {

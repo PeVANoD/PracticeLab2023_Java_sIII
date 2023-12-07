@@ -10,7 +10,7 @@ import java.util.Objects;
 
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Serializable, TabulatedFunction {
-    static class Node implements Serializable{
+    static class Node implements Serializable {
 
         public double x;
         public double y;
@@ -53,7 +53,8 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             return result;
         }
     }
-    private static final long serialVersionUID= 1L;
+
+    private static final long serialVersionUID = 1L;
     private int count;
     private Node head;
 

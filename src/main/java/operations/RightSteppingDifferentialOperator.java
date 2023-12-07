@@ -1,6 +1,7 @@
 package operations;
 
 import functions.MathFunction;
+
 public class RightSteppingDifferentialOperator extends SteppingDifferentialOperator<MathFunction> {
 
     public RightSteppingDifferentialOperator(double step) {

@@ -1,8 +1,6 @@
 package operations;
 
 import functions.MathFunction;
-import static java.lang.Double.NaN;
-import static java.lang.Double.POSITIVE_INFINITY;
 
 public abstract class SteppingDifferentialOperator<T extends MathFunction> implements DifferentialOperator<T> {
     protected double step;

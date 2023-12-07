@@ -1,11 +1,15 @@
 package concurrent;
 
-import functions.*;
+import functions.LinkedListTabulatedFunction;
+import functions.TabulatedFunction;
+import functions.UnitFunction;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MultiplyingTaskExecutor {
     public static void main(String[] args) throws InterruptedException {

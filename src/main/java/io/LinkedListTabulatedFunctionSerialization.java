@@ -2,17 +2,17 @@ package io;
 
 import functions.LinkedListTabulatedFunction;
 import functions.TabulatedFunction;
-import functions.factory.TabulatedFunctionFactory;
 import functions.factory.LinkedListTabulatedFunctionFactory;
+import functions.factory.TabulatedFunctionFactory;
 import operations.TabulatedDifferentialOperator;
+
 import java.io.*;
-import java.io.FileInputStream;
 
 public class LinkedListTabulatedFunctionSerialization {
     public static void main(String[] args) {
         try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("output/serialized linked list functions.bin"))) {
-            double[] xValue = {1,3,5};
-            double[] yValue = {2,4,9};
+            double[] xValue = {1, 3, 5};
+            double[] yValue = {2, 4, 9};
 
             TabulatedFunction function = new LinkedListTabulatedFunction(xValue, yValue);
             TabulatedFunctionFactory factory = new LinkedListTabulatedFunctionFactory();

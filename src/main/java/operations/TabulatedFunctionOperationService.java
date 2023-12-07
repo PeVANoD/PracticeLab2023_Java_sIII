@@ -1,8 +1,8 @@
 package operations;
 
 import exceptions.InconsistentFunctionsException;
-import functions.TabulatedFunction;
 import functions.Point;
+import functions.TabulatedFunction;
 import functions.factory.ArrayTabulatedFunctionFactory;
 import functions.factory.TabulatedFunctionFactory;
 
@@ -77,6 +77,7 @@ public class TabulatedFunctionOperationService {
         BiOperation operation = (u, v) -> u / v;
         return doOperation(firstFunction, secondFunction, operation);
     }
+
     private interface BiOperation {
         double apply(double u, double v);
     }
