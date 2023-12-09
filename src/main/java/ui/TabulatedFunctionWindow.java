@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.TableModelExceptionHandler;
 import functions.TabulatedFunction;
 import functions.factory.ArrayTabulatedFunctionFactory;
 import exceptions.PointsFieldListener;
@@ -12,16 +13,13 @@ import java.util.*;
 import java.util.List;
 
 public class TabulatedFunctionWindow extends JFrame {
-    private JTextField pointsField;
     private JButton createButton;
-    private JTable table;
 
     public TabulatedFunctionWindow() {
         setTitle("Tabulated Function Creator");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Проверка исключений
         JTextField pointsField = new JTextField(10);
         pointsField.addActionListener(new PointsFieldListener(pointsField));
 
@@ -33,21 +31,36 @@ public class TabulatedFunctionWindow extends JFrame {
         topPanel.add(createButton);
         add(topPanel, BorderLayout.NORTH);
 
+        JTable myTable = new JTable(new DefaultTableModel(0, 2));
+        myTable.setFillsViewportHeight(true);
+        add(new JScrollPane(myTable), BorderLayout.CENTER);
 
 
-        table = new JTable(new DefaultTableModel(0, 2));
-        table.setFillsViewportHeight(true);
-        add(new JScrollPane(table), BorderLayout.CENTER);
+
 
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int numPoints = Integer.parseInt(pointsField.getText());
-                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                DefaultTableModel model = (DefaultTableModel) myTable.getModel();
                 model.setRowCount(numPoints);
+                TableModelExceptionHandler exceptionHandler = new TableModelExceptionHandler(myTable);
+
 
                 createButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+
+                        boolean hasEmptyCells = false;
+                        for (int i = 0; i < numPoints; i++) {
+                            if (model.getValueAt(i, 0) == null || model.getValueAt(i, 1) == null) {
+                                hasEmptyCells = true;
+                                break;
+                            }
+                        }
+                        if (hasEmptyCells) {
+                            JOptionPane.showMessageDialog(null, "Заполните все ячейки в таблице");
+                        }
+
                         double[] xValues = new double[numPoints];
                         double[] yValues = new double[numPoints];
                         for (int i = 0; i < numPoints; i++) {
@@ -63,6 +76,7 @@ public class TabulatedFunctionWindow extends JFrame {
 
                         dispose();
                     }
+
 
                     private static double[][] sortValues(double[] xValues, double[] yValues) {
                         int n = xValues.length;
@@ -83,7 +97,9 @@ public class TabulatedFunctionWindow extends JFrame {
 
                         return sortedValues;
                     }
+
                 });
+
             }
 
         });
@@ -96,5 +112,9 @@ public class TabulatedFunctionWindow extends JFrame {
                 new TabulatedFunctionWindow().setVisible(true);
             }
         });
+    }
+
+    private void handleException(String message) {
+        JOptionPane.showMessageDialog(null, message, "Input Error", JOptionPane.WARNING_MESSAGE);
     }
 }
