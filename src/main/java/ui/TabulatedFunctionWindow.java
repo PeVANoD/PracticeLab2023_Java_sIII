@@ -50,15 +50,31 @@ public class TabulatedFunctionWindow extends JFrame {
                 createButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 
-                        boolean hasEmptyCells = false;
-                        for (int i = 0; i < numPoints; i++) {
-                            if (model.getValueAt(i, 0) == null || model.getValueAt(i, 1) == null) {
-                                hasEmptyCells = true;
-                                break;
+                        {
+                            boolean hasEmptyCells = false;
+                            boolean hasInvalidChars = false;
+                            for (int i = 0; i < numPoints; i++) {
+                                if (myTable.getValueAt(i, 0) == null || myTable.getValueAt(i, 1) == null) {
+                                    hasEmptyCells = true;
+                                    break;
+                                } else {
+                                    String value1 = myTable.getValueAt(i, 0).toString();
+                                    String value2 = myTable.getValueAt(i, 1).toString();
+                                    if (value1.isEmpty() || value2.isEmpty()) {
+                                        hasEmptyCells = true;
+                                        break;
+                                    }
+                                    if (value1.matches("[a-zA-Zа-яА-Я]+") || value2.matches("[a-zA-Zа-яА-Я]+")) {
+                                        hasInvalidChars = true;
+                                        break;
+                                    }
+                                }
                             }
-                        }
-                        if (hasEmptyCells) {
-                            JOptionPane.showMessageDialog(null, "Заполните все ячейки в таблице");
+                            if (hasEmptyCells) {
+                                JOptionPane.showMessageDialog(null, "Заполните все ячейки в таблице");
+                            } else if (hasInvalidChars) {
+                                JOptionPane.showMessageDialog(null, "Недопустимые символы в ячейках таблицы");
+                            }
                         }
 
                         double[] xValues = new double[numPoints];
