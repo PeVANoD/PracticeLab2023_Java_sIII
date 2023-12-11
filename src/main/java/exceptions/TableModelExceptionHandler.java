@@ -28,7 +28,7 @@ public class TableModelExceptionHandler implements TableModelListener {
         }
     }
 
-    private void handleException(String message) {
+    public static void handleException(String message) {
         JOptionPane.showMessageDialog(null, message, "Input Error", JOptionPane.WARNING_MESSAGE);
     }
 }

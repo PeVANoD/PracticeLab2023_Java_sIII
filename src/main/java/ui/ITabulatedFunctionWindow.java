@@ -12,21 +12,25 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
-public class TabulatedFunctionWindow extends JFrame {
+public class ITabulatedFunctionWindow extends JFrame {
     private JButton createButton;
 
-    public TabulatedFunctionWindow() {
+    public ITabulatedFunctionWindow() {
         setTitle("Tabulated Function Creator");
-        setSize(400, 300);
+        setSize(1200, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Font font = new Font("Arial", Font.PLAIN, 22);
 
         JTextField pointsField = new JTextField(10);
         pointsField.addActionListener(new PointsFieldListener(pointsField));
 
         createButton = new JButton("Создать");
+        createButton.setFont(font);
 
         JPanel topPanel = new JPanel();
-        topPanel.add(new JLabel("Кол-во точек: "));
+        JLabel cPoints = new JLabel("Кол-во точек: ");
+        cPoints.setFont(font);
+        topPanel.add(cPoints);
         topPanel.add(pointsField);
         topPanel.add(createButton);
         add(topPanel, BorderLayout.NORTH);
@@ -41,6 +45,9 @@ public class TabulatedFunctionWindow extends JFrame {
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String text = pointsField.getText();
+                if (!(text.matches("[0-9]+")))
+                    JOptionPane.showMessageDialog(null, "Неверное значение");
                 int numPoints = Integer.parseInt(pointsField.getText());
                 DefaultTableModel model = (DefaultTableModel) myTable.getModel();
                 model.setRowCount(numPoints);
@@ -49,7 +56,6 @@ public class TabulatedFunctionWindow extends JFrame {
 
                 createButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-
                         {
                             boolean hasEmptyCells = false;
                             boolean hasInvalidChars = false;
@@ -64,7 +70,7 @@ public class TabulatedFunctionWindow extends JFrame {
                                         hasEmptyCells = true;
                                         break;
                                     }
-                                    if (value1.matches("[a-zA-Zа-яА-Я]+") || value2.matches("[a-zA-Zа-яА-Я]+")) {
+                                    if (!(value1.matches("[0-9]+")) || !(value2.matches("[0-9]+"))) {
                                         hasInvalidChars = true;
                                         break;
                                     }
@@ -125,7 +131,7 @@ public class TabulatedFunctionWindow extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new TabulatedFunctionWindow().setVisible(true);
+                new ITabulatedFunctionWindow().setVisible(true);
             }
         });
     }

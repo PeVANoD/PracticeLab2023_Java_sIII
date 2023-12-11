@@ -8,6 +8,6 @@ public class SqrFunctionTest {
 
     @Test
     public void testEquals() {
-        Assert.assertEquals(0.0, test0.apply(0));
+        Assert.assertEquals(4.0, test0.apply(2));
     }
 }
