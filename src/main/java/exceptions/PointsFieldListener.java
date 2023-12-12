@@ -16,13 +16,16 @@ public class PointsFieldListener implements ActionListener {
         String text = pointsField.getText();
         try {
             int value = Integer.parseInt(text);
-            if (value < 0) {
+            if (value <= 0) {
+                pointsField.setText("");
                 throw new IllegalArgumentException("Введите положительное число");
             }
         } catch (NumberFormatException ex) {
             handleException("Введите число");
+            pointsField.setText("");
         } catch (IllegalArgumentException ex) {
             handleException(ex.getMessage());
+            pointsField.setText("");
         }
     }
 

@@ -1,5 +1,7 @@
 package exceptions;
 
+import com.sun.java.accessibility.util.SwingEventMonitor;
+
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -20,11 +22,15 @@ public class TableModelExceptionHandler implements TableModelListener {
 
         String text = String.valueOf(table.getValueAt(row, col));
         try {
+            if (text.equals(""))
+                return;
             int value = Integer.parseInt(text);
         } catch (NumberFormatException ex) {
             handleException("Введите число");
+            table.setValueAt("", row, col);
         } catch (IllegalArgumentException ex) {
             handleException(ex.getMessage());
+            table.setValueAt("", row, col);
         }
     }
 

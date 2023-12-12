@@ -35,7 +35,7 @@ public class IITabulatedFunctionWindow extends JFrame {
 
         UIManager.put("Button.font", new Font("Arial", Font.PLAIN, 22));
         UIManager.put("Label.font", new Font("Arial", Font.PLAIN, 22));
-        UIManager.put("ComboBox.font", new Font("Arial", Font.PLAIN, 22));
+        UIManager.put("ComboBox.font", new Font("Verdana", Font.PLAIN, 22));
 
         JPanel mainPanel = new JPanel(new GridLayout(4, 1));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));

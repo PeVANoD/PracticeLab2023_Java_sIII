@@ -1,6 +1,7 @@
 package ui;
 
 import exceptions.TableModelExceptionHandler;
+import exceptions.UncaughtExceptionHandlerImpl;
 import functions.TabulatedFunction;
 import functions.factory.ArrayTabulatedFunctionFactory;
 import exceptions.PointsFieldListener;
@@ -17,7 +18,7 @@ public class ITabulatedFunctionWindow extends JFrame {
 
     public ITabulatedFunctionWindow() {
         setTitle("Tabulated Function Creator");
-        setSize(1200, 600);
+        setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Font font = new Font("Arial", Font.PLAIN, 22);
 
@@ -45,43 +46,17 @@ public class ITabulatedFunctionWindow extends JFrame {
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String text = pointsField.getText();
-                if (!(text.matches("[0-9]+")))
-                    JOptionPane.showMessageDialog(null, "Неверное значение");
-                int numPoints = Integer.parseInt(pointsField.getText());
-                DefaultTableModel model = (DefaultTableModel) myTable.getModel();
-                model.setRowCount(numPoints);
-                TableModelExceptionHandler exceptionHandler = new TableModelExceptionHandler(myTable);
+                Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandlerImpl(ITabulatedFunctionWindow.this));
+                try {
+                    int numPoints = Integer.parseInt(pointsField.getText());
+                    DefaultTableModel model = (DefaultTableModel) myTable.getModel();
+                    model.setRowCount(numPoints);
+                    TableModelExceptionHandler IIexceptionHandler = new TableModelExceptionHandler(myTable);
 
 
                 createButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        {
-                            boolean hasEmptyCells = false;
-                            boolean hasInvalidChars = false;
-                            for (int i = 0; i < numPoints; i++) {
-                                if (myTable.getValueAt(i, 0) == null || myTable.getValueAt(i, 1) == null) {
-                                    hasEmptyCells = true;
-                                    break;
-                                } else {
-                                    String value1 = myTable.getValueAt(i, 0).toString();
-                                    String value2 = myTable.getValueAt(i, 1).toString();
-                                    if (value1.isEmpty() || value2.isEmpty()) {
-                                        hasEmptyCells = true;
-                                        break;
-                                    }
-                                    if (!(value1.matches("[0-9]+")) || !(value2.matches("[0-9]+"))) {
-                                        hasInvalidChars = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (hasEmptyCells) {
-                                JOptionPane.showMessageDialog(null, "Заполните все ячейки в таблице");
-                            } else if (hasInvalidChars) {
-                                JOptionPane.showMessageDialog(null, "Недопустимые символы в ячейках таблицы");
-                            }
-                        }
+
 
                         double[] xValues = new double[numPoints];
                         double[] yValues = new double[numPoints];
@@ -121,11 +96,15 @@ public class ITabulatedFunctionWindow extends JFrame {
                     }
 
                 });
+                } catch (Exception ex) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), ex);
+                }
 
             }
 
         });
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -134,9 +113,5 @@ public class ITabulatedFunctionWindow extends JFrame {
                 new ITabulatedFunctionWindow().setVisible(true);
             }
         });
-    }
-
-    private void handleException(String message) {
-        JOptionPane.showMessageDialog(null, message, "Input Error", JOptionPane.WARNING_MESSAGE);
     }
 }
