@@ -20,14 +20,6 @@ public class OperationWindow extends JDialog {
         super(owner, "Function Operation Window", true); // создаем модальное диалоговое окно, указывая владельца и устанавливаем его видимость
         this.operationService = operationService;
 
-        // Инициализация компонентов
-        // Создание областей для первого операнда, второго операнда и результата, представленных в виде JTable
-        // Создание кнопок для создания, загрузки и сохранения функции для каждого операнда
-        // Создание кнопок для выполнения операций (сложение, вычитание, умножение, деление)
-
-        // ... создание компонентов и добавление их на форму ...
-
-        // Пример кнопки для сложения
         JButton addButton = new JButton("Сложить");
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -79,10 +71,10 @@ public class OperationWindow extends JDialog {
             String selectedType = (String) functionTypeComboBox1.getSelectedItem();
             if (selectedType.equals("Массивы")) {
                 // Открыть окно для создания функции из массивов: TabulatedFunctionI
-                // После создания функции она должна добавиться в соответствующую таблицу
+
             } else {
                 // Открыть окно для создания функции из другой табулированной функции: TabulatedFunctionII
-                // После создания функции она должна добавиться в соответствующую таблицу
+
             }
         });
         JLabel functionTypeLabel2 = new JLabel("Тип данных для второго операнда:");
@@ -93,22 +85,20 @@ public class OperationWindow extends JDialog {
             String selectedType = (String) functionTypeComboBox2.getSelectedItem();
             if (selectedType.equals("Массивы")) {
                 // Логика создания функции из массивов: TabulatedFunctionI
-                // После создания функции она должна добавиться в соответствующую таблицу
             } else {
                 // Логика создания функции из другой табулированной функции: TabulatedFunctionII
-                // После создания функции она должна добавиться в соответствующую таблицу
             }
         });
 
         JPanel mainPanel = new JPanel(new GridLayout(3, 1));
-        // Секция для первого операнда
+
         JPanel firstFunctionPanel = new JPanel(new FlowLayout());
         firstFunctionPanel.add(functionTypeLabel1);
         firstFunctionPanel.add(functionTypeComboBox1);
         firstFunctionPanel.add(createFunctionButton1);
         mainPanel.add(firstFunctionPanel);
 
-        // Создание JPanel и добавление компонентов для второго операнда
+
         JPanel secondFunctionPanel = new JPanel(new FlowLayout());
         secondFunctionPanel.add(functionTypeLabel2);
         secondFunctionPanel.add(functionTypeComboBox2);
@@ -123,18 +113,16 @@ public class OperationWindow extends JDialog {
         operationsPanel.add(multiplyButton);
         operationsPanel.add(divideButton);
 
-        // Секция для результатов операций
         JPanel resultPanel = new JPanel(new FlowLayout());
         JLabel resultLabel = new JLabel("Результат операции:");
         resultPanel.add(resultLabel);
-        // Добавление компонентов для отображения результата
+
         thirdPanel.add(operationsPanel,TOP_ALIGNMENT);
         thirdPanel.add(resultPanel,BOTTOM_ALIGNMENT);
         mainPanel.add(thirdPanel);
-        // Добавление компонентов к окну
-        // Установка layout и распределение компонентов на форме
+
         add(mainPanel, BorderLayout.CENTER);
-        // Подготовка окна для отображения
+
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         pack();
         setSize(1400, 900);
@@ -144,7 +132,7 @@ public class OperationWindow extends JDialog {
 
     // Метод для создания табулированной функции из JTable
     private TabulatedFunction getTabulatedFunctionFromTable(JTable table) {
-        // Получение данных из JTable и создание табулированной функции
+
         int rowCount = table.getRowCount();
         double[] xValues = new double[rowCount];
         double[] yValues = new double[rowCount];
@@ -152,17 +140,17 @@ public class OperationWindow extends JDialog {
             xValues[i] = (double) table.getValueAt(i, 0);
             yValues[i] = (double) table.getValueAt(i, 1);
         }
-        // Предположим, что для создания табулированной функции у вас есть конструктор, который принимает массивы x и y
-        TabulatedFunction tabulatedFunction = new ArrayTabulatedFunction(xValues, yValues); // Заменить на вашу реализацию
+
+        TabulatedFunction tabulatedFunction = new ArrayTabulatedFunction(xValues, yValues);
         return tabulatedFunction;
     }
 
-    // Метод для отображения табулированной функции в JTable
+
     private void displayFunctionInTable(TabulatedFunction function, JTable table) {
-        // Отображение значений табулированной функции в JTable
+
         int rowCount = function.getCount();
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0); // Начнем с очистки таблицы
+        model.setRowCount(0);
         for (int i = 0; i < rowCount; i++) {
             model.addRow(new Object[]{function.getX(i), function.getY(i)});
         }
